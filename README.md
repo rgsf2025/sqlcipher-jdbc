@@ -1,18 +1,17 @@
 Fork Notes
 ==================
-This is a fork of a [SQLite JDBC driver] ( https://github.com/decamp/sqlcipher-jdbc) to work for 64-bit Windows and Linux
-Note that decamp itself was a fork of a [SQLite JDBC driver](https://bitbucket.org/xerial/sqlite-jdbc) that as modified originally
-to work for for 64-bit OS X. Hence a lot of the documentation here is originally from decamp, but copied here for the sake of completeness.
-I have tried to add the build related aspects for 64-bit Windows and Linux, that are not currently available at decamp site.
+This is a fork of a [SQLite JDBC driver] ( https://github.com/decamp/sqlcipher-jdbc) to work for 64-bit Windows and Linux. Note that decamp itself was a fork of a  [SQLite JDBC driver](https://bitbucket.org/xerial/sqlite-jdbc) that as modified to work for for 64-bit OS X. 
+Hence a lot of the documentation here is originally from decamp, but copied here for the sake of completeness.
 
+There are two major changes here, compared to decamp. They are,
+1. Upgraded and tested for sqlcipher ver 4.10.0 (requires Java JDK17)
+2. Built for 64-bit versions fo Windows (specifically Windows-11) and Linux
 
+I have tried to add the build related aspects for 64-bit Windows and Linux, that are not currently available at decamp site. In addition, as it has been over many years since the original SqlCipher-Jdbc project was created, I have added a short section on a few other similar projects that exist today.
 
 About SqlCipher
 ==================
-[SQLCipher](https://www.zetetic.net/sqlcipher/) is a version of SQLite that is modified to support encryption.
-SQLCipher is included here as a submodule. The only native binaries included here currently are for 64-bit OS X.
-I've tried to keep modifications minimal, though, and it might not be difficult to get things to build for other
-platforms by fiddling with the makefiles.
+[SQLCipher](https://www.zetetic.net/sqlcipher/) is a version of SQLite that is modified to support encryption. SQLCipher is included here as a submodule. The only native binaries included here currently are for 64-bit OS X.
 
 To create/open an encrypted database, try something like:
 ```
@@ -32,9 +31,23 @@ See SQLCipher documentation for the relevant pragmas that control encryption. Th
 - cipher_migrate
 - cipher_profile
 
--decamp
+Other SqlCipher-Jdbc projects
+==================================
 
+Several repositories at GitHub provide implementations or related information for using SQLCipher with JDBC:
 
+1. Willena/sqlite-jdbc-crypt (https://github.com/Willena/sqlite-jdbc-crypt) : This is a prominent fork of the SQLite JDBC driver that includes support for SQLCipher encryption. It allows Java applications to access and create encrypted SQLite databases using SQLCipher. The repository's README.md and USAGE.md files provide details on how to integrate and use this driver.
+BUT THIS IS FOR SQLITE-MULTIPLE-CIPHERS, a contemporary version of sqlite supporting cipher but NOT same as SqlCipher and is NOT interoperative with SqlCipher!!
+
+2. decamp/sqlcipher-jdbc (https://github.com/decamp/sqlcipher-jdbc) : This repository also offers a JDBC driver for SQLCipher, specifically noted for OS X compatibility in its description. While it serves a similar purpose, it may have different features or maintenance status compared to the Willena fork.
+
+3. sqlcipher/sqlcipher-android (https://github.com/sqlcipher/sqlcipher-android) : While not a direct JDBC driver, this repository provides the SQLCipher implementation for Android, which is relevant for Java developers working on Android platforms. It demonstrates how SQLCipher is integrated into the Android SQLite API. 
+
+Other than the work recorded at GitHub, MingW also provides built SqlCipher DLL for windows-64 at https://packages.msys2.org/packages/ (search for "cipher"). But this is NOT enough for building sqlcipher-jdbc.jar. In addition, the linux version is not available in MingW.
+
+Apart from that, there is a visual-studio based project at https://www.domstamand.com/compiling-sqlcipher-sqlite-encrypted-for-windows-using-visual-studio-2022/ . Again, this goes only up to generating a DLL of sqlcipher, but does not give SqlCipher.jar with native connections between Java and the DLL.
+
+So, we decided to stick with decamp work, update it with sqlcipher ver 4.10.0 and build it for 64-bit versions of Windows and Linux using Jave JDK17.
 
 SQLite JDBC Driver
 ==================
@@ -68,7 +81,6 @@ is our utility to create personalized genome browsers.
 Public Discussion Forum
 =======================
 *  [Xerial Public Discussion Group](http://groups.google.com/group/xerial?hl=en) 
-*  Post bug reports or feqture requests to [Issue Tracker](https://bitbucket.org/xerial/sqlite-jdbc/issues)
 
 
 Usage
