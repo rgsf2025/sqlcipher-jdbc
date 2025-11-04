@@ -2,7 +2,7 @@ How to compile a new version of SQLiteJDBC
 ===========================================
 Prerequisites
 -------------
-1. JDK 1.5
+1. JDK 17
 2. Perl
 3. Maven
 4. make

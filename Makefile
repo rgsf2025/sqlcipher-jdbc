@@ -1,11 +1,10 @@
-# use JDK1.5 to build native libraries
+# use JDK to build native libraries
 
 include Makefile.common
 
 RESOURCE_DIR = src/main/resources
 
-.phony: all package win32 mac32 mac64 linux32 native deploy
-.phony: mac64
+.phony: all package win32 win64 mac32 mac64 linux32 linux64 native deploy
 
 all: package
 
@@ -14,11 +13,21 @@ deploy:
 
 MVN:=mvn
 SRC:=src/main/java
+NATIVE_SRC:=$(SRC)/org/sqlite/core
 SQLITE_OUT:=$(TARGET)/$(sqlite)-$(OS_NAME)-$(OS_ARCH)
 #SQLITE_ARCHIVE:=$(TARGET)/$(sqlite)-amal.zip
 #SQLITE_UNPACKED:=$(TARGET)/sqlite-unpack.log
-#SQLITE_AMAL_DIR=$(TARGET)/$(SQLITE_AMAL_PREFIX)
-SQLCIPHER_DIR:=sqlcipher
+#SQLITE_AMAL_DIR:=$(TARGET)/$(SQLITE_AMAL_PREFIX)
+
+# CHANGE THIS as per target OS
+ifeq ($(OS_NAME),Windows)
+	SQLCIPHER_DIR:=/c/Tools/sqlcipher
+else
+	# assume it is Linux
+	SQLCIPHER_DIR:=/home/ezadmin/tools/sqlcipher
+endif
+
+SQLCIPHER_BLD_DIR:=$(SQLCIPHER_DIR)
 
 # Note that that SQLITE_OMIT_LOAD_EXTENSION cannot be disabled on Macs due
 # to a bug in the SQLITE automake config. To make matters worse, SQLITE
@@ -28,7 +37,7 @@ SQLCIPHER_DIR:=sqlcipher
 # the JNI code will function correctly and not try to test if extensions 
 # are available.
 SQLITE_FLAGS:=\
-	-DSQLITE_OMIT_LOAD_EXTENSION \
+	-DSQLITE_ENABLE_LOAD_EXTENSION=1 \
 	-DSQLITE_ENABLE_UPDATE_DELETE_LIMIT \
 	-DSQLITE_ENABLE_COLUMN_METADATA \
 	-DSQLITE_CORE \
@@ -36,9 +45,22 @@ SQLITE_FLAGS:=\
 	-DSQLITE_ENABLE_FTS3_PARENTHESIS \
 	-DSQLITE_ENABLE_RTREE \
 	-DSQLITE_ENABLE_STAT2 \
-	-DSQLITE_HAS_CODEC
-	
-CFLAGS:= -I$(SQLITE_OUT) -I$(SQLITE_AMAL_DIR) $(CFLAGS) $(SQLITE_FLAGS)
+	-DSQLITE_HAS_CODEC \
+	-DSQLCIPHER_CRYPTO_OPENSSL \
+	-DSQLITE_THREADSAFE=1 \
+	-DSQLITE_TEMP_STORE=2 \
+	-DSQLITE_EXTRA_INIT=sqlcipher_extra_init \
+	-DSQLITE_EXTRA_SHUTDOWN=sqlcipher_extra_shutdown
+
+# CHANGE THIS as per target OS
+ifeq ($(OS_NAME),Windows)
+	CFLAGS:= -I$(SQLITE_OUT) -I$(SQLITE_AMAL_DIR) $(CFLAGS) $(SQLITE_FLAGS) \
+		-I/c/Tools/OpenSSL-Win64/include $(SQLCIPHER_DIR)/libcrypto-3-x64.dll \
+		-L$(SQLCIPHER_DIR) -static-libgcc
+else # assume it is Linux
+	CFLAGS:= -I$(SQLITE_OUT) -I$(SQLITE_AMAL_DIR) $(CFLAGS) $(SQLITE_FLAGS) \
+		-I/usr/lib/jvm/default-java/include -fPIC
+endif
 
 $(SQLITE_ARCHIVE):
 	@mkdir -p $(@D)
@@ -50,12 +72,14 @@ $(SQLITE_UNPACKED): $(SQLITE_ARCHIVE)
 	    
 $(SQLITE_OUT)/org/sqlite/%.class: src/main/java/org/sqlite/%.java
 	@mkdir -p $(@D)
-	$(JAVAC) -source 1.5 -target 1.5 -sourcepath $(SRC) -d $(SQLITE_OUT) $<
+	$(JAVAC) -source 17 -target 17 -sourcepath $(SRC) -d $(SQLITE_OUT) $<
 
-jni-header: $(SRC)/org/sqlite/core/NativeDB.h
+jni-header: $(NATIVE_SRC)/NativeDB.h
 
 $(SQLITE_OUT)/NativeDB.h: $(SQLITE_OUT)/org/sqlite/core/NativeDB.class
-	$(JAVAH) -classpath $(SQLITE_OUT) -jni -o $@ org.sqlite.core.NativeDB
+	$(JAVAH) $(NATIVE_SRC) -d $(SQLITE_OUT) -classpath $(SQLITE_OUT) $(NATIVE_SRC)/NativeDB.java
+	mv $(NATIVE_SRC)/org_sqlite_core_NativeDB.h $(NATIVE_SRC)/NativeDB.h
+
 # Apple uses different include path conventions.
 ifeq ($(OS_NAME),Mac)
 	cp $@ $@.tmp
@@ -63,47 +87,26 @@ ifeq ($(OS_NAME),Mac)
 	rm $@.tmp
 endif
 
-
 test:
 	mvn test
 
-
 clean: clean-native clean-java clean-tests
 
-
 $(SQLITE_OUT)/sqlite3.o:
-	cd $(SQLCIPHER_DIR); CPPFLAGS="$(SQLITE_FLAGS)" ./configure;
-	make -C $(SQLCIPHER_DIR)
 	@mkdir -p $(@D)
-	cp $(SQLCIPHER_DIR)/sqlite3.o $@
-	
-#$(SQLITE_OUT)/sqlite3.o : $(SQLITE_AMAL)
-#	@mkdir -p $(@D)
-#	perl -p -e "s/sqlite3_api;/sqlite3_api = 0;/g" \
-#	    $(SQLITE_AMAL_DIR)/sqlite3ext.h > $(SQLITE_OUT)/sqlite3ext.h
-# insert a code for loading extension functions
-#	perl -p -e "s/^opendb_out:/  if(!db->mallocFailed && rc==SQLITE_OK){ rc = RegisterExtensionFunctions(db); }\nopendb_out:/;" \
-#	    $(SQLITE_AMAL_DIR)/sqlite3.c > $(SQLITE_OUT)/sqlite3.c
-#	cat src/main/ext/*.c >> $(SQLITE_OUT)/sqlite3.c
-#	$(CC) -o $@ -c $(CFLAGS) \
-#	    -DSQLITE_ENABLE_LOAD_EXTENSION=1 \
-#	    -DSQLITE_ENABLE_UPDATE_DELETE_LIMIT \
-#	    -DSQLITE_ENABLE_COLUMN_METADATA \
-#	    -DSQLITE_CORE \
-#	    -DSQLITE_ENABLE_FTS3 \
-#	    -DSQLITE_ENABLE_FTS3_PARENTHESIS \
-#	    -DSQLITE_ENABLE_RTREE \
-#	    -DSQLITE_ENABLE_STAT2 \
-#	    -DSQLITE_HAS_CODEC \
-#	    $(SQLITE_FLAGS) \
-#	    $(SQLITE_OUT)/sqlite3.c
+	cp $(SQLCIPHER_BLD_DIR)/sqlite3.o $(SQLITE_OUT)/sqlite3.o
+	cp $(SQLCIPHER_BLD_DIR)/sqlite3.h $(SQLITE_OUT)/sqlite3.h
+	@echo "Copied sqlite3.o and sqlite3.h from sqlcipher/build to the target dir"
+	read -p "Press enter to continue" DUMMY_INPUT
 
 $(SQLITE_OUT)/$(LIBNAME): $(SQLITE_OUT)/sqlite3.o $(SRC)/org/sqlite/core/NativeDB.c $(SQLITE_OUT)/NativeDB.h
 	@mkdir -p $(@D)
-	$(CC) $(CFLAGS) -c -o $(SQLITE_OUT)/NativeDB.o $(SRC)/org/sqlite/core/NativeDB.c
-	$(CC) $(CFLAGS) -o $@ $(SQLITE_OUT)/*.o $(LINKFLAGS)
-	$(STRIP) $@
+	$(CC) $(CFLAGS) -c -o $(SQLITE_OUT)/NativeDB.o $(NATIVE_SRC)/NativeDB.c 
+	read -p "NativeDB.c is complied. Press enter to continue" DUMMY_INPUT
+	$(CC) $(CFLAGS) -o $@ $(SQLITE_OUT)/sqlite3.o $(SQLITE_OUT)/NativeDB.o $(LINKFLAGS)
+	read -p "sqlitejdbc.dll is created in temp folder. Press enter to continue" DUMMY_INPUT
 
+	$(STRIP) $@
 
 NATIVE_DIR=src/main/resources/org/sqlite/native/$(OS_NAME)/$(OS_ARCH)
 NATIVE_TARGET_DIR:=$(TARGET)/classes/org/sqlite/native/$(OS_NAME)/$(OS_ARCH)
@@ -116,13 +119,20 @@ $(NATIVE_DLL): $(SQLITE_OUT)/$(LIBNAME)
 	cp $< $@
 	@mkdir -p $(NATIVE_TARGET_DIR)
 	cp $< $(NATIVE_TARGET_DIR)/$(LIBNAME)
-
+	@echo "sqlitejdbc.dll is created in the required folder hierarchy"
+	read -p "Press enter to continue" DUMMY_INPUT
 
 win32: 
-	$(MAKE) native CC=i686-w64-mingw32-gcc OS_NAME=Windows OS_ARCH=x86
+	$(MAKE) native OS_NAME=Windows OS_ARCH=x86
+
+win64: 
+	$(MAKE) native OS_NAME=Windows OS_ARCH=amd64
 
 linux32:
 	$(MAKE) native OS_NAME=Linux OS_ARCH=i386
+
+linux64:
+	$(MAKE) native OS_NAME=Linux OS_ARCH=amd64
 
 sparcv9:
 	$(MAKE) native OS_NAME=SunOS OS_ARCH=sparcv9
