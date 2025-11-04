@@ -56,7 +56,6 @@ public class JDBC implements Driver
         return false;
     }
 
-    @Override
     public Logger getParentLogger() throws SQLFeatureNotSupportedException {
         throw new SQLFeatureNotSupportedException( "getParentLogger" );
     }

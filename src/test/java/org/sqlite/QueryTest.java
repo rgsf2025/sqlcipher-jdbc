@@ -165,14 +165,14 @@ public class QueryTest
             PreparedStatement ps = conn
                     .prepareStatement("select group_concat(ifnull(shortname, name)) from mxp, person where mxp.mid=? and mxp.pid=person.id and mxp.type='T'");
             ps.clearParameters();
-            ps.setInt(1, new Integer(2));
+            ps.setInt(1, 2);
             rs = ps.executeQuery();
             while (rs.next()) {
                 // read the result set
                 assertEquals("Y,abc", rs.getString(1));
             }
             ps.clearParameters();
-            ps.setInt(1, new Integer(2));
+            ps.setInt(1, 2);
             rs = ps.executeQuery();
             while (rs.next()) {
                 // read the result set

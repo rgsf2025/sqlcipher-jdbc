@@ -122,11 +122,11 @@ public abstract class CorePreparedStatement extends JDBC4Statement
 
            case REAL:
                // long to Julian date
-               batch(pos, new Double((value/86400000.0) + 2440587.5));
+               batch(pos, (double)((value/86400000.0) + 2440587.5));
                break;
 
            default: //INTEGER:
-               batch(pos, new Long(value / conn.dateMultiplier));
+               batch(pos, (long)(value / conn.dateMultiplier));
        }
    }
 }

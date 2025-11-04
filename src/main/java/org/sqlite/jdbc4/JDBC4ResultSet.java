@@ -297,13 +297,11 @@ public class JDBC4ResultSet extends JDBC3ResultSet implements ResultSet, ResultS
         
     }
 
-    @Override
     public <T> T getObject( int columnIndex, Class<T> type ) throws SQLException {
         // TODO: Implement
         throw new SQLFeatureNotSupportedException("getObject(int,Class)");
     }
 
-    @Override
     public <T> T getObject( String columnLabel, Class<T> type ) throws SQLException {
         // TODO: Implement
         throw new SQLFeatureNotSupportedException("getObject(String,Class)");

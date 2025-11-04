@@ -210,7 +210,7 @@ public abstract class DB implements Codes
             finalize(stmt);
         }
         stmt.pointer = prepare(stmt.sql);
-        stmts.put(new Long(stmt.pointer), stmt);
+        stmts.put(stmt.pointer, stmt);
     }
 
     /**
@@ -229,7 +229,7 @@ public abstract class DB implements Codes
             rc = finalize(stmt.pointer);
         }
         finally {
-            stmts.remove(new Long(stmt.pointer));
+            stmts.remove(stmt.pointer);
             stmt.pointer = 0;
         }
         return rc;

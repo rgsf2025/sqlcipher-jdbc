@@ -607,13 +607,13 @@ public abstract class JDBC3ResultSet extends CoreResultSet {
         case SQLITE_INTEGER:
             long val = getLong(col);
             if (val > Integer.MAX_VALUE || val < Integer.MIN_VALUE) {
-                return new Long(val);
+                return val;
             }
             else {
-                return new Integer((int) val);
+                return (int) val;
             }
         case SQLITE_FLOAT:
-            return new Double(getDouble(col));
+            return getDouble(col);
         case SQLITE_BLOB:
             return getBytes(col);
         case SQLITE_NULL:

@@ -36,12 +36,10 @@ public class JDBC4Statement extends JDBC3Statement implements Statement {
         return false;
     }
 
-    @Override
     public void closeOnCompletion() throws SQLException {
         // TODO: Implement
     }
 
-    @Override
     public boolean isCloseOnCompletion() throws SQLException {
         // TODO: Implement
         return false;

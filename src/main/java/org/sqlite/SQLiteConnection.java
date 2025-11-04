@@ -45,28 +45,23 @@ public class SQLiteConnection extends JDBC4Connection
         super(url, fileName, prop);
     }
 
-    @Override
     public void setSchema( String schema ) throws SQLException {
         //TODO: Implement
     }
 
-    @Override
     public String getSchema() throws SQLException {
         //TODO: Implement
         return null;
     }
 
-    @Override
     public void abort( Executor executor ) throws SQLException {
         //TODO: Implement
     }
 
-    @Override
     public void setNetworkTimeout( Executor executor, int milliseconds ) throws SQLException {
         //TODO: Implement
     }
 
-    @Override
     public int getNetworkTimeout() throws SQLException {
         //TODO: Implement
         return 0;

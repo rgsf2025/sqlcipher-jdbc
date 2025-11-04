@@ -79,7 +79,8 @@ public class ConnectionTest
            assert(e.getMessage().contains("Cannot change read-only flag after establishing a connection.")); 
         }
         finally {
-            conn.close();
+            if (!conn.isClosed())
+                conn.close();
         }
     }
 
@@ -179,7 +180,7 @@ public class ConnectionTest
     public void openInvalidLocation() throws SQLException {
         Connection conn = DriverManager.getConnection("jdbc:sqlite:/");
         conn.close();
-    }
+        }
 
     @Test
     public void openResource() throws Exception {
@@ -275,5 +276,8 @@ public class ConnectionTest
         rs.close();
         stmt4.close();
         conn4.close();
+        conn3.close();
+        conn2.close();
+        conn1.close();
     }
 }

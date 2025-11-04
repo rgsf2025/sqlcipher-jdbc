@@ -258,12 +258,9 @@ public class SQLiteConfig
         // Pragmas that can be set after opening the database
         CACHE_SIZE("cache_size"),
         CASE_SENSITIVE_LIKE("case_sensitive_like", OnOff),
-        COUNT_CHANGES("count_changes", OnOff),
         DEFAULT_CACHE_SIZE("default_cache_size"),
-        EMPTY_RESULT_CALLBACKS("empty_result_callback", OnOff),
         ENCODING("encoding", toStringArray(Encoding.values())),
         FOREIGN_KEYS("foreign_keys", OnOff),
-        FULL_COLUMN_NAMES("full_column_names", OnOff),
         FULL_SYNC("fullsync", OnOff),
         INCREMENTAL_VACUUM("incremental_vacuum"),
         JOURNAL_MODE("journal_mode", toStringArray(JournalMode.values())),
@@ -387,17 +384,6 @@ public class SQLiteConfig
     }
 
     /**
-     * @deprecated
-     * Enables or disables the count-changes flag. When enabled, INSERT, UPDATE
-     * and DELETE statements return the number of rows they modified.
-     * @param enable True to enable; false to disable.
-     * @see <a href="http://www.sqlite.org/pragma.html#pragma_count_changes">www.sqlite.org/pragma.html#pragma_count_changes</a>
-     */
-    public void enableCountChanges(boolean enable) {
-        set(Pragma.COUNT_CHANGES, enable);
-    }
-
-    /**
      * Sets the suggested maximum number of database disk pages that SQLite will
      * hold in memory at once per open database file. The cache size set here
      * persists across database connections.
@@ -406,17 +392,6 @@ public class SQLiteConfig
      */
     public void setDefaultCacheSize(int numberOfPages) {
         set(Pragma.DEFAULT_CACHE_SIZE, numberOfPages);
-    }
-
-    /**
-     * @deprecated
-     * Enables or disables the empty_result_callbacks flag.
-     * @param enable True to enable; false to disable.
-     * false.
-     * @see <a href="http://www.sqlite.org/pragma.html#pragma_empty_result_callbacks">http://www.sqlite.org/pragma.html#pragma_empty_result_callbacks</a>
-     */
-    public void enableEmptyResultCallBacks(boolean enable) {
-        set(Pragma.EMPTY_RESULT_CALLBACKS, enable);
     }
 
     /**
@@ -496,18 +471,6 @@ public class SQLiteConfig
      */
     public void enforceForeignKeys(boolean enforce) {
         set(Pragma.FOREIGN_KEYS, enforce);
-    }
-
-    /**
-     * @deprecated
-     * Enables or disables the full_column_name flag. This flag together with
-     * the short_column_names flag determine the way SQLite assigns names to
-     * result columns of SELECT statements.
-     * @param enable True to enable; false to disable.
-     * @see <a href="http://www.sqlite.org/pragma.html#pragma_full_column_names">www.sqlite.org/pragma.html#pragma_full_column_names</a>
-     */
-    public void enableFullColumnNames(boolean enable) {
-        set(Pragma.FULL_COLUMN_NAMES, enable);
     }
 
     /**

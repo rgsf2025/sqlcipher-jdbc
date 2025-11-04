@@ -21,6 +21,8 @@ public class OSInfoTest
 {
     @Test
     public void osName() {
+        assertEquals("Windows", OSInfo.translateOSNameToFolderName("Windows 11"));
+        assertEquals("Windows", OSInfo.translateOSNameToFolderName("Windows 10"));
         assertEquals("Windows", OSInfo.translateOSNameToFolderName("Windows XP"));
         assertEquals("Windows", OSInfo.translateOSNameToFolderName("Windows 2000"));
         assertEquals("Windows", OSInfo.translateOSNameToFolderName("Windows Vista"));

@@ -27,7 +27,6 @@ package org.sqlite;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -64,23 +63,6 @@ public class SQLiteJDBCLoader
     public static boolean initialize() throws Exception {
         loadSQLiteNativeLibrary();
         return extracted;
-    }
-
-    /**
-     * @return True if the SQLite JDBC driver is set to pure Java mode; false otherwise.
-     * @deprecated Pure Java no longer supported 
-     */
-    static boolean getPureJavaFlag() {
-        return Boolean.parseBoolean(System.getProperty("sqlite.purejava", "false"));
-    }
-
-    /**
-     * Checks if the SQLite JDBC driver is set to pure Java mode. 
-     * @return True if the SQLite JDBC driver is set to pure Java mode; false otherwise.
-     * @deprecated Pure Java nolonger supported
-     */
-    public static boolean isPureJavaMode() {
-        return false;
     }
 
     /**
@@ -139,23 +121,24 @@ public class SQLiteJDBCLoader
         File extractedLibFile = new File(targetFolder, extractedLibFileName);
 
         try {
-            if (extractedLibFile.exists()) {
-                // test md5sum value
-                String md5sum1 = md5sum(SQLiteJDBCLoader.class.getResourceAsStream(nativeLibraryFilePath));
-                String md5sum2 = md5sum(new FileInputStream(extractedLibFile));
-
-                if (md5sum1.equals(md5sum2)) {
-                    return loadNativeLibrary(targetFolder, extractedLibFileName);
-                }
-                else {
-                    // remove old native library file
-                    boolean deletionSucceeded = extractedLibFile.delete();
-                    if (!deletionSucceeded) {
-                        throw new IOException("failed to remove existing native library file: "
-                                + extractedLibFile.getAbsolutePath());
-                    }
-                }
-            }
+//            if (extractedLibFile.exists())
+//            {
+//                // test md5sum value
+//                String md5sum1 = md5sum(SQLiteJDBCLoader.class.getResourceAsStream(nativeLibraryFilePath));
+//                String md5sum2 = md5sum(new FileInputStream(extractedLibFile));
+//
+//                if (md5sum1.equals(md5sum2)) {
+//                    return loadNativeLibrary(targetFolder, extractedLibFileName);
+//                }
+//                else {
+//                    // remove old native library file
+//                    boolean deletionSucceeded = extractedLibFile.delete();
+//                    if (!deletionSucceeded) {
+//                        throw new IOException("failed to remove existing native library file: "
+//                                + extractedLibFile.getAbsolutePath());
+//                    }
+//                }
+//            }
 
             // extract file into the current directory
             InputStream reader = SQLiteJDBCLoader.class.getResourceAsStream(nativeLibraryFilePath);
@@ -198,10 +181,12 @@ public class SQLiteJDBCLoader
 
             try {
                 System.load(new File(path, name).getAbsolutePath());
+                System.out.println ("Loaded Native library from " + libPath.getAbsolutePath());
                 return true;
             }
-            catch (UnsatisfiedLinkError e) {
-                System.err.println(e);
+            catch (Exception e) {
+                System.out.println ("Could not load Native library from " + libPath.getAbsolutePath());
+                e.printStackTrace();
                 return false;
             }
 

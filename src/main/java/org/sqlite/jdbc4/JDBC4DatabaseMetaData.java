@@ -57,7 +57,6 @@ public class JDBC4DatabaseMetaData extends JDBC3DatabaseMetaData implements Data
         return null;
     }
 
-    @Override
     public ResultSet getPseudoColumns( String catalog,
                                        String schemaPattern,
                                        String tableNamePattern,
@@ -67,19 +66,16 @@ public class JDBC4DatabaseMetaData extends JDBC3DatabaseMetaData implements Data
         return null;
     }
 
-    @Override
     public boolean generatedKeyAlwaysReturned() throws SQLException {
         //TODO: Implement
         return false;
     }
 
-    @Override
     public long getMaxLogicalLobSize() throws SQLException {
         //TODO: Implement
         return 0;
     }
 
-    @Override
     public boolean supportsRefCursors() throws SQLException {
         //TODO: Implement
         return false;

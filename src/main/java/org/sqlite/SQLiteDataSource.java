@@ -158,16 +158,6 @@ public class SQLiteDataSource implements DataSource
     }
 
     /**
-     * Enables or disables the count-changes flag. When enabled INSERT, UPDATE
-     * and DELETE statements return the number of rows they modified.
-     * @param enable True to enable; false to disable.
-     * @see <a href="http://www.sqlite.org/pragma.html#pragma_count_changes">http://www.sqlite.org/pragma.html#pragma_count_changes</a>
-     */
-    public void setCouncChanges(boolean enable) {
-        config.enableCountChanges(enable);
-    }
-
-    /**
      * Sets the default maximum number of database disk pages that SQLite will
      * hold in memory at once per open database file. 
      * @param numberOfPages The default suggested cache size.
@@ -196,17 +186,6 @@ public class SQLiteDataSource implements DataSource
      */
     public void setEnforceForeinKeys(boolean enforce) {
         config.enforceForeignKeys(enforce);
-    }
-
-    /**
-     * Enables or disables the full_column_names flag. This flag together with 
-     * the short_column_names flag determine the way SQLite assigns names to
-     * result columns of SELECT statements.
-     * @param enable True to enable; false to disable.
-     * @see <a href="http://www.sqlite.org/pragma.html#pragma_full_column_names">http://www.sqlite.org/pragma.html#pragma_full_column_names</a>
-     */
-    public void setFullColumnNames(boolean enable) {
-        config.enableFullColumnNames(enable);
     }
 
     /**

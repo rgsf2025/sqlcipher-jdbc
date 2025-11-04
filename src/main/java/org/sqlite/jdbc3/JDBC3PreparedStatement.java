@@ -274,28 +274,28 @@ public abstract class JDBC3PreparedStatement extends CorePreparedStatement {
      * @see java.sql.PreparedStatement#setDouble(int, double)
      */
     public void setDouble(int pos, double value) throws SQLException {
-        batch(pos, new Double(value));
+        batch(pos, value);
     }
 
     /**
      * @see java.sql.PreparedStatement#setFloat(int, float)
      */
     public void setFloat(int pos, float value) throws SQLException {
-        batch(pos, new Float(value));
+        batch(pos, value);
     }
 
     /**
      * @see java.sql.PreparedStatement#setInt(int, int)
      */
     public void setInt(int pos, int value) throws SQLException {
-        batch(pos, new Integer(value));
+        batch(pos, value);
     }
 
     /**
      * @see java.sql.PreparedStatement#setLong(int, long)
      */
     public void setLong(int pos, long value) throws SQLException {
-        batch(pos, new Long(value));
+        batch(pos, value);
     }
 
     /**
@@ -323,13 +323,13 @@ public abstract class JDBC3PreparedStatement extends CorePreparedStatement {
             setDateByMilliseconds(pos, ((java.util.Date) value).getTime());
         }
         else if (value instanceof Date) {
-            setDateByMilliseconds(pos, new Long(((Date) value).getTime()));
+            setDateByMilliseconds(pos, (((Date) value).getTime()));
         }
         else if (value instanceof Time) {
-            setDateByMilliseconds(pos, new Long(((Time) value).getTime()));
+            setDateByMilliseconds(pos, (((Time) value).getTime()));
         }
         else if (value instanceof Timestamp) {
-            setDateByMilliseconds(pos, new Long(((Timestamp) value).getTime()));
+            setDateByMilliseconds(pos, (((Timestamp) value).getTime()));
         }
         else if (value instanceof Long) {
             batch(pos, value);
@@ -338,7 +338,7 @@ public abstract class JDBC3PreparedStatement extends CorePreparedStatement {
             batch(pos, value);
         }
         else if (value instanceof Short) {
-            batch(pos, new Integer(((Short) value).intValue()));
+            batch(pos, (((Short) value).intValue()));
         }
         else if (value instanceof Float) {
             batch(pos, value);

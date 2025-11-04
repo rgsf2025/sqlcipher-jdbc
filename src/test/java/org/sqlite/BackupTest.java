@@ -58,7 +58,8 @@ public class BackupTest
 
         assertEquals(2, count);
         rs.close();
-
+        
+        conn.close();
     }
 
     @Test
@@ -80,6 +81,7 @@ public class BackupTest
         stmt.close();
         //System.err.println("backup done.");
 
+        conn.close();
     }
 
 }
