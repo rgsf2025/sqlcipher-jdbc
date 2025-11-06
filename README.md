@@ -48,8 +48,8 @@ Several repositories at GitHub provide implementations or related information fo
 1. Xerial Sqlite-Jdbc driver (https://github.com/xerial/sqlite-jdbc) by [Taro L. Saito]:
 This is Sqlite Jdbc driver and hence it has all the everything required to connect native
 [SQLite](http://sqlite.org) to the java world. However, this does not include the encryption,
-which is added in SqlCipher (extension of sqlite with encryption).There is a public discussion forum at
-[Xerial Public Discussion Group](http://groups.google.com/group/xerial?hl=en) 
+which is added in SqlCipher (extension of sqlite with encryption). There is a public discussion
+forum at [Xerial Public Discussion Group](http://groups.google.com/group/xerial?hl=en) 
 
 
 2. Willena/sqlite-jdbc-crypt (https://github.com/Willena/sqlite-jdbc-crypt) : This is a prominent
@@ -60,9 +60,9 @@ but NOT same as SqlCipher and is NOT interoperative with SqlCipher!!
 
 
 3. decamp/sqlcipher-jdbc (https://github.com/decamp/sqlcipher-jdbc) : This repository combines
-the starts from Xerial Sqlite-Jdbc driver and adds SqlCipher (instead of plain sqlite).
-Currently this caters to JDBC driver for SQLCipher, specifically noted for OS X compatibility
-in the description section.
+the starts from xerial Sqlite-Jdbc driver and adds SqlCipher (in place of plain sqlite).
+At the time of writing this documentation, decamp site caters to JDBC driver for SQLCipher 
+specifically noted for OS X compatibility, as per the description section on that site.
 
 
 4. sqlcipher/sqlcipher-android (https://github.com/sqlcipher/sqlcipher-android) : While not a
@@ -236,29 +236,7 @@ loads `org.sqlite.JDBC` driver.
 
 License
 ==========
-This program follows the Apache License version 2.0 (<http://www.apache.org/licenses/> ) That means:
-
-It allows you to:
-
-*   freely download and use this software, in whole or in part, for personal, company internal, or commercial purposes; 
-*   use this software in packages or distributions that you create. 
-
-It forbids you to:
-
-*   redistribute any piece of our originated software without proper attribution; 
-*   use any marks owned by us in any way that might state or imply that we xerial.org endorse your distribution; 
-*   use any marks owned by us in any way that might state or imply that you created this software in question. 
-
-It requires you to:
-
-*   include a copy of the license in any redistribution you may make that includes this software; 
-*   provide clear attribution to us, xerial.org for any distributions that include this software 
-
-It does not require you to:
-
-*   include the source of this software itself, or of any modifications you may have 
-    made to it, in any redistribution you may assemble that includes it; 
-*   submit changes that you make to the software back to this software (though such feedback is encouraged). 
+This program follows the Apache License version 2.0 (<http://www.apache.org/licenses/> ) 
 
 See License FAQ <http://www.apache.org/foundation/licence-FAQ.html> for more details.
 
@@ -434,9 +412,10 @@ Steps to build sqlcipher related files that are needed for common sqlcipher-jdbc
 	
 
 7. ISSUES faced:
-	while compiling if you see, "stdlib.h not found error" means msys2 installation has mixed up tools (ucrt, x64 etc.)
-	Just uninstall msys2 using C:\Tools\mysys2\uninstall.exe
-	Reinstall msys2 and follow the above steps and MORE IMPORTANTLY use  "ucrt" in every pacman instruction
+
+	while compiling if you see, "stdlib.h not found error" means msys2 installation has mixed up tools (ucrt, x64 etc.),
+	just uninstall msys2 using C:\Tools\mysys2\uninstall.exe and 
+	reinstall msys2 and follow the above steps and MORE IMPORTANTLY use  "ucrt" in every pacman instruction
 
 
 8. Testing sqlite3.exe (sqlite with sqlCipher)
@@ -485,9 +464,9 @@ Steps to build sqlcipher related files that are needed for common sqlcipher-jdbc
 	sqlite> .quit
 
 
-Building sqllitejdbc.dll library for Windows
+Building sqlitejdbc.dll library for Windows
 --------------------------------------------
-Steps to build sqlcipher related files (sqllitejdbc.dll for Windows) that are later used to
+Steps to build sqlcipher related files (sqlitejdbc.dll for Windows) that are later used to
 create a common sqlcipher-jdbc jar file
 
 1. This fork has the entire project with all the source files for JDBC driver
@@ -498,11 +477,16 @@ create a common sqlcipher-jdbc jar file
 	C:\Tools\sqlcipher-jdbc\src\main\resources\org\sqlite\native\Windows\amd64 (yes, it is amd64 and not x64)
 	
 3. Start MSYS2 terminal using "C:\Tools\msys64\msys2_shell.cmd -use-full-path"
+
+
 	make clean;
+	
 	make win64;
-	This creates sqllitejdbc.dll in the temp (target) dir first and then copies it to
+	
+	This creates sqlitejdbc.dll in the temp (target) dir first and then copies it to
 		C:\Tools\sqlcipher-jdbc\src\main\resources\org\sqlite\native\Windows\amd64
-	This is the SECOND DLL that includes both sqlite3 from previous set of instructions and NativeDB.c interfaces from this project
+		
+	This is the SECOND DLL that includes both sqlite3 from previous set of instructions and NativeDB.c interfaces from this project.
 	This DLL is going to be used in creating sqlcipher-jdbc.jar in the next few steps
 	
 4. A Note about the JNI interface files and the DLL that is created using them 
@@ -511,7 +495,7 @@ create a common sqlcipher-jdbc jar file
 
 	Inputs within SqlCipherJdbc folder : "trio" files (DB.java, NativeDB.java and NativeDb.c)
 
-	Output: sqllitejdbc.dll
+	Output: sqlitejdbc.dll
 
 	(a) DB.java has the interface functions defined (like _open, _close etc. for db).
 		These are the interface functions that the next higher layer of callers use to make use of native library.
@@ -606,7 +590,7 @@ a common jar file created to use at both Windows and Linux.
 
 NOTE: In this project, Netbeans has been used to create the common sqlcipher-jdbc.jar file.
 
-1. If the sqllitejdbc.dll (for Windows) was built here, then that DLL will already be at the right place
+1. If the sqlitejdbc.dll (for Windows) was built here, then that DLL will already be at the right place
 
 2. If not done already, copy the libsqlitejdbc.so file to C:\Tools\sqlcipher-jdbc folder.
 	ie., copy <your-folder>/tools/sqlcipher-jdbc/src/main/resources/org/sqlite/native/Linux/amd64
@@ -629,6 +613,7 @@ NOTE: In this project, Netbeans has been used to create the common sqlcipher-jdb
 	Clean and build
 
 6. Junit  tests: During the above step, the projects is devised to run 166 tests. and they should all pass.
+
 	Check for any errors (like deprecated etc.) and fix them.
 	
 	NOTE: Unfortunately these tests could not be run in Linux as these are junit tests (on Netbeans on Windows in our setup).
@@ -639,15 +624,18 @@ NOTE: In this project, Netbeans has been used to create the common sqlcipher-jdb
 		
 	SQLiteJDBCLoader.loadSQLiteNativeLibrary() in this jar loads the appropriate .dll
 	or .so file (after linux part is also built) included in the the jar.
+	
 	So one common jar serves both windows and linux, as long as the resource folder had libs (.dll and .so) for Windows and Linux
 
 7. ISSUES faced:
 
 	SQLiteException with Unsatisfied LinkError - cannot find _open function
+	
 	This issue arised because the first DLL from building sqlcipher was used in creating sqlcipher-jdbc.jar.
 	That first DLL does NOT have JNI interfaces defined in trio files (DB.java, NativeDB.java and NativeDb.c).
 	Due to that, the outer layer caller never found _open, _close etc. defined as JNI interface functions
 	to get to the sqlCipher native library.
+	
 	Once the second DLL was created using the above steps the outer layer caller could reach the inner native
 	library through the JNI interface functions. This resolved the issue.
 
