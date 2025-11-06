@@ -518,7 +518,7 @@ Building libsqlitejdbc.so library for Linux
 Steps to build sqlcipher related files (sqlcipher-jdbc.so for Linux) that are later used to
 create a common sqlcipher-jdbc jar file
 
-1. Compile sqlcipher (ver 4.10.0) in <your-folder>/tools/sqlcipher folder to get sqlcipher.exe ((named sqlite3)
+1. Compile sqlcipher (ver 4.10.0) in your-folder/tools/sqlcipher folder to get sqlcipher.exe ((named sqlite3)
 
 	./configure --with-tempstore=yes \
 		CFLAGS="-DSQLITE_ENABLE_LOAD_EXTENSION=1 \
@@ -554,7 +554,7 @@ create a common sqlcipher-jdbc jar file
 
 2. Test sqlcipher (named sqlite3) with the known et
 
-	 > ./sqlite3 # it should give sqlite prompt
+	 prompt> ./sqlite3 # it should give sqlite prompt
 	 
 		% .version # it should give sqlite3 version 3.50.4 (SqlCipher version 4.10.0 Community)
 		
@@ -567,7 +567,7 @@ create a common sqlcipher-jdbc jar file
 	   d) PRAGMA key="ezKey"; for the 'et' file provided in this folder
 		   
 3. Create libsqlitejdbc.so
-	a) Copy C:\Tools\sqlcipher-jdbc to <your-folder>/tools/sqlcipher-jdbc folder 
+	a) Copy C:\Tools\sqlcipher-jdbc to your-folder/tools/sqlcipher-jdbc folder 
 	
 	NOTE: all make files are modified appropriately to copy the appropriate files from sqlcipher folder
 	
@@ -578,7 +578,7 @@ create a common sqlcipher-jdbc jar file
 4. Copy the libsqlitejdbc.so file to C:\Tools\sqlcipher-jdbc folder.
 
 
-	ie., copy <your-folder>/tools/sqlcipher-jdbc/src/main/resources/org/sqlite/native/Linux/amd64
+	ie., copy your-folder/tools/sqlcipher-jdbc/src/main/resources/org/sqlite/native/Linux/amd64
 	to C:\Tools\sqlcipher-jdbc\src\main\resources\org\sqlite\native\Linux\amd64
 
 
@@ -593,7 +593,7 @@ NOTE: In this project, Netbeans has been used to create the common sqlcipher-jdb
 1. If the sqlitejdbc.dll (for Windows) was built here, then that DLL will already be at the right place
 
 2. If not done already, copy the libsqlitejdbc.so file to C:\Tools\sqlcipher-jdbc folder.
-	ie., copy <your-folder>/tools/sqlcipher-jdbc/src/main/resources/org/sqlite/native/Linux/amd64
+	ie., copy your-folder/tools/sqlcipher-jdbc/src/main/resources/org/sqlite/native/Linux/amd64
 	to C:\Tools\sqlcipher-jdbc\src\main\resources\org\sqlite\native\Linux\amd64
 
 3. Open Netbeans and start this project (sqlcipher-jdbc)
