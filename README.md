@@ -3,10 +3,10 @@ Fork Notes
 This is a fork of a [SQLite JDBC driver] ( https://github.com/decamp/sqlcipher-jdbc) to work 
 for 64-bit Windows and Linux. Note that decamp itself was a fork of a 
 [SQLite JDBC driver](https://github.com/xerial/sqlite-jdbc) that as modified to work for
-64-bit OS X. Although at some point in time, I think there was indeed support for Windows
-and Linux also at this site. 
+64-bit OS X. Although at some point in time around the year 2015, there was indeed support
+for Windows and Linux also at this site. 
 
-Hence the documentation on basic sqlite-jdbc driver is taken from xerial and updated to
+The documentation on basic sqlite-jdbc driver is taken from xerial and updated to
 include sqlcipher into it.
 
 There are two major changes here, compared to decamp. They are,
@@ -89,8 +89,8 @@ Public Discussion Forum on the JDBC driver
 	Note: for some time now, there are no discussions there. But the forum is open.
 
 
-Usage
-============ 
+Using SqlCipher JDBC driver
+============================ 
 As in the original work (https://github.com/xerial/sqlite-jdbc)
 by [Taro L. Saito](http://www.xerial.org/leo), sqlcipher-jdbc library
 requires no configuration since native libraries for both Windows and Linux, are assembled
@@ -290,8 +290,8 @@ and manually put the sqlcipher-jdbc jar file into (TOMCAT_HOME)/lib folder.
 
 
 
-Build process
-==================
+Building SqlCipher JDBC driver (sqlcipher-jdbc.jar)
+===================================================
 The following are the steps to follow to upgrade SqlCipher to the latest (or the version
 that you desire) and build a common jar for 64-bit Windows and Linux.
 
@@ -305,8 +305,8 @@ The above steps are explained in detail the following sections. I have also adde
 section on notes on tools and libraries used.
 
 
-Building sqlcipher project for Windows-x64
--------------------------------------------
+Building the basic sqlcipher project for Windows-x64
+-----------------------------------------------------
 Steps to build sqlcipher related files that are needed for common sqlcipher-jdbc jar file
 
 1. MSYS2 installation
@@ -442,8 +442,8 @@ Steps to build sqlcipher related files that are needed for common sqlcipher-jdbc
 	sqlite> .quit
 
 
-Build process : Building sqllitejdbc.dll library for Windows
-------------------------------------------------------------
+Building sqllitejdbc.dll library for Windows
+--------------------------------------------
 Steps to build sqlcipher related files (sqllitejdbc.dll for Windows) that are later used to
 create a common sqlcipher-jdbc jar file
 
@@ -486,8 +486,8 @@ create a common sqlcipher-jdbc jar file
 	Any change or new interface needs to be implemented in these trio functions.
 
 
-Build process : Building libsqlitejdbc.so library for Linux
------------------------------------------------------------
+Building libsqlitejdbc.so library for Linux
+-------------------------------------------
 Steps to build sqlcipher related files (sqlcipher-jdbc.so for Linux) that are later used to
 create a common sqlcipher-jdbc jar file
 
@@ -530,7 +530,7 @@ create a common sqlcipher-jdbc jar file
 		   
 3. Create libsqlitejdbc.so
 	a) Copy C:\Tools\sqlcipher-jdbc to <your-folder>/tools/sqlcipher-jdbc folder 
-	# all make files are modified appropriately to copy the appropriate files from sqlcipher folder
+	Note: all make files are modified appropriately to copy the appropriate files from sqlcipher folder
 	make clean
 	make Linux64
 
@@ -539,8 +539,8 @@ create a common sqlcipher-jdbc jar file
 	to C:\Tools\sqlcipher-jdbc\src\main\resources\org\sqlite\native\Linux\amd64
 
 
-Build process : Building common sqlcipher-jdbc.jar (for Windows and Linux)
---------------------------------------------------------------------------
+Building common sqlcipher-jdbc.jar (for Windows and Linux)
+----------------------------------------------------------
 Steps for building sqlcipher-jdbc.jar (common for windows and linux) and test it. It is important to 
 test the .dll and jar file so that any issues with native interface etc. are resolved here, before
 a common jar file created to use at both Windows and Linux.
