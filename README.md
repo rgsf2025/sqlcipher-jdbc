@@ -310,25 +310,37 @@ Building the basic sqlcipher project for Windows-x64
 Steps to build sqlcipher related files that are needed for common sqlcipher-jdbc jar file
 
 1. MSYS2 installation
+
     Download and install MSYS2 to C:\Tools\msys64\ folder from its official website (https://www.msys2.org/)
+	
     Launch the MSYS2 MinGW 64-bit terminal (C:\Tools\msys64\msys2_shell.cmd -use-full-path)
+	
     Update the package databases and core system packages using the following lines:
 
     pacman -Syuu # multiple times until there is nothing more gets updated
-	pacman -S mingw-w64-ucrt-x86_64-toolchain # this installs 29 base utils like make, gcc, openssl and tcl etc. then exceute the lines below to get full versions
+	
+	pacman -S mingw-w64-ucrt-x86_64-toolchain # this installs all base utils like make, gcc, openssl and tcl etc. then exceute the lines below to get full versions
+	
 	pacman -S mingw-w64-ucrt-x86_64-openssl
+	
 	pacman -S mingw-w64-ucrt-x86_64-autotools
+	
 	pacman -S mingw-w64-ucrt-x86_64-tcl
+	
     pacman -S mingw-w64-ucrt-x86_64-gcc # GCC to start compiling projects
+	
 	pacman -S mingw-w64-ucrt-x86_64-make
 	
 	pacman -Qqe # to list all the packages installed so far by pacman
+	
 	pacman -R <package_names|package_groups> # for removing packages
+	
 	pacman -Ss <package_names|package_groups> # for searching packages
 	
 	Add C:\Tools\msys64\ucrt\bin to PATH in system-env in windows
 	
 	Create a new system environment variable named MSYS2_PATH_TYPE.
+	
 	Set its value to inherit. This will apply the inheritance setting globally to all MSYS2 shells launched on the system.
 
 	Create a shortcut using "C:\Tools\msys64\msys2_shell.cmd -use-full-path" and use this to launch msys2
@@ -357,6 +369,7 @@ Steps to build sqlcipher related files that are needed for common sqlcipher-jdbc
 	gcc --version # to make sure that gcc path is correctly set
 	
 	cd /c # Change to C:
+	
 	cd C:\Tools\sqlcipher
 	
 	from https://github.com/sqlcipher/sqlcipher combine it with a few more learnings from ChatGPT and issue reports
@@ -380,8 +393,11 @@ Steps to build sqlcipher related files that are needed for common sqlcipher-jdbc
 	It prints the following lines at the end of a long set of logs
 	
 	Created Makefile from Makefile.in
+	
 	Created sqlite3.pc from sqlite3.pc.in
+	
 	Created sqlite_cfg.h
+	
 	That is a successful configuration!!
 
 
@@ -390,22 +406,32 @@ Steps to build sqlcipher related files that are needed for common sqlcipher-jdbc
 
 
 6. Continuing with MSYS2 terminal...
+
 	make clean
+	
 	make sqlite3.c --enable-load-extension
+	
 	make
+	
 	make dll 
+	
 	This creates the required output files (C:\Tools\sqlcipher\sqlite3.exe and C:\Tools\sqlcipher\sqlite3.dll)
 	
 	OUTPUTS : All in C:\Tools\sqlcipher folder 
+	
 	sqlite3.exe - used for testing later
+	
 	sqlite3.c, sqlite3.h, sqlite3ext.h and sqlite3.o - MUST NEED for bulding JDBC driver
+	
 			NOTE: Although the names are sqlite3, these are sqlcipher (based on sqlite3) related files.
+			
 	sqlite3.dll - THIS is the first DLL, but this is not of much use in common jar creation
 		as the JDBC is going to use sqlite3.c, .h etc.
+		
 	libsqlite3.dll.a and libsqlite3.a - static libraries - again, not of much use!
+	
 	msys-sqlite3-0.dll - DLL with msys debug classes -  again, not of much use!
-	a lot of other files, that are not of much use
-
+	
 
 7. ISSUES faced:
 	while compiling if you see, "stdlib.h not found error" means msys2 installation has mixed up tools (ucrt, x64 etc.)
@@ -421,24 +447,41 @@ Steps to build sqlcipher related files that are needed for common sqlcipher-jdbc
 	sqlcipher.exe et # this starts sqlcipher with new db named "et"
 
 	sqlite> PRAGMA cipher_version;
+	
 	4.10.0 community
+	
 	sqlite> PRAGMA key="ezKey";
+	
 	sqlite> .database
+	
 	main: D:\ezTemp\SqlCipherTest\et r/w
+	
 	sqlite> CREATE TABLE Students (StudentId INTEGER PRIMARY KEY NOT NULL,
 		FirstName TEXT NOT NULL, LastName TEXT NOT NULL, BirthDate TEXT, Email TEXT UNIQUE);
+		
 	sqlite> .tables
+	
 	Students
+	
 	sqlite> .schema
+	
 	CREATE TABLE Students (StudentId INTEGER PRIMARY KEY NOT NULL,
 		FirstName TEXT NOT NULL, LastName TEXT NOT NULL, BirthDate TEXT, Email TEXT UNIQUE);
+		
 	sqlite> Insert into Students(FirstName, LastName, BirthDate, Email) VALUES ("Sri", "Ram", "01-01-2000", "sri_ram@zohomail.com");
+	
 	sqlite> select * from Students;
+	
 	1|Sri|Ram|01-01-2000|sri_ram@gmail.com
+	
 	sqlite>  Insert into Students(FirstName, LastName, BirthDate, Email) VALUES ("your", "name", "01-01-2010", "your_name@gmail.com");
+	
 	sqlite> select * from Students;
+	
 	1|Sri|Ram|01-01-2000|sri_ram@gmail.com
+	
 	2|your|name|01-01-2010|your_name@gmail.org
+	
 	sqlite> .quit
 
 
@@ -512,29 +555,45 @@ create a common sqlcipher-jdbc jar file
 		LDFLAGS="-lcrypto"
 			
 	The above script prints lot of lines with "ok" at the end and finally the following three lines.
+	
 		Created Makefile from Makefile.in
+		
 		Created sqlite3.pc from sqlite3.pc.in
+		
 		Created sqlite_cfg.h
+		
 	That is a successful configuration!!
 		
 	make # build everything needed
+	
 	sudo make install # install the "libsqlite3.a" and "libsqlite.so" in "/usr/local/lib" folder
 
 2. Test sqlcipher (named sqlite3) with the known et
+
 	 > ./sqlite3 # it should give sqlite prompt
+	 
 		% .version # it should give sqlite3 version 3.50.4 (SqlCipher version 4.10.0 Community)
+		
 	   a) "PRAGMA cipher_version;" should print the version of sqlcipher version, again!
+	   
 	   b) .help for help
+	   
 	   c) .quit for quit or exit
+	   
 	   d) PRAGMA key="ezKey"; for the 'et' file provided in this folder
 		   
 3. Create libsqlitejdbc.so
 	a) Copy C:\Tools\sqlcipher-jdbc to <your-folder>/tools/sqlcipher-jdbc folder 
+	
 	Note: all make files are modified appropriately to copy the appropriate files from sqlcipher folder
+	
 	make clean
+	
 	make Linux64
 
 4. Copy the libsqlitejdbc.so file to C:\Tools\sqlcipher-jdbc folder.
+
+
 	ie., copy <your-folder>/tools/sqlcipher-jdbc/src/main/resources/org/sqlite/native/Linux/amd64
 	to C:\Tools\sqlcipher-jdbc\src\main\resources\org\sqlite\native\Linux\amd64
 
