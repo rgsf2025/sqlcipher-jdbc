@@ -13,9 +13,6 @@ There are two major changes here, compared to decamp. They are,
 1. Upgraded and tested for sqlcipher ver 4.10.0 (requires Java JDK17)
 2. Built for 64-bit versions of Windows (specifically Windows-11) and Linux
 
-I have tried to add the build related aspects for 64-bit Windows and Linux. In addition, as it
-has been over many years since the original sqlcipher-jdbc project was created, a
-short section on a few other similar projects that exist today is also added here.
 
 About SqlCipher
 ==================
@@ -54,7 +51,6 @@ which is added in SqlCipher (extension of sqlite with encryption).
 2. Willena/sqlite-jdbc-crypt (https://github.com/Willena/sqlite-jdbc-crypt) : This is a prominent
 fork of the SQLite JDBC driver that includes support for SQLCipher encryption. It allows Java
 applications to access and create encrypted SQLite databases using SQLCipher.
-
 BUT THIS IS FOR SQLITE-MULTIPLE-CIPHERS, a contemporary version of sqlite supporting cipher
 but NOT same as SqlCipher and is NOT interoperative with SqlCipher!!
 
@@ -87,25 +83,20 @@ for 64-bit versions of Windows and Linux using Jave JDK17. For detailed instruct
 the common jar file, see the last sections all the way below.
 
 
-Original work on SQLite JDBC Driver
-===================================
-As in the original work by [Taro L. Saito](http://www.xerial.org/leo), SqlCipherJDBC library
-requires no configuration since native libraries for both Windows and Linux, are assembled
-into a single JAR (Java Archive) file.
-Just build the library (JAR file) and append it to your class path. 
-
-
-Public Discussion Forum on the driver
-=====================================
+Public Discussion Forum on the JDBC driver
+==========================================
 *  [Xerial Public Discussion Group](http://groups.google.com/group/xerial?hl=en) 
 	Note: for some time now, there are no discussions there. But the forum is open.
 
 
 Usage
 ============ 
-SQLite JDBC is a library for accessing SQLite databases through the JDBC API. For the general
-usage of JDBC, see [JDBC Tutorial](http://docs.oracle.com/javase/tutorial/jdbc/index.html) or 
-[Oracle JDBC Documentation](http://www.oracle.com/technetwork/java/javase/tech/index-jsp-136101.html).
+As in the original work (https://github.com/xerial/sqlite-jdbc)
+by [Taro L. Saito](http://www.xerial.org/leo), sqlcipher-jdbc library
+requires no configuration since native libraries for both Windows and Linux, are assembled
+into a single JAR (Java Archive) file.
+Just build the library (JAR file) and append it to your class path. 
+
 
 1.  Build the jar file (see the last sections below) and then append this jar file into your classpath. 
 2.  Load the JDBC driver `org.sqlite.JDBC` from your code. (see the example below)    
@@ -222,7 +213,7 @@ To use a memory database in your Java code, get the database connection as follo
     
 
 Supported Operating Systems
-===========================
+---------------------------
 Since sqlite-jdbc-3.6.19, the natively compiled SQLite engines will be used for 
 the following operating systems:
 
@@ -234,7 +225,7 @@ you will need to build the source from scratch.
 
 
 How does sqlcipher-jdbc work?
--------------------------
+---------------------------
 Similar to xerial's SQLite JDBC driver package, sqlcipher-jdbc
 (i.e., `sqlcipher-jdbc-(VERSION).jar`) contains different 
 types of native SQLite libraries (`sqlcipher-jdbc.dll`, `sqlcipher-jdbc.so`), 
@@ -244,7 +235,7 @@ loads `org.sqlite.JDBC` driver.
 
 
 License
--------
+==========
 This program follows the Apache License version 2.0 (<http://www.apache.org/licenses/> ) That means:
 
 It allows you to:
@@ -272,8 +263,9 @@ It does not require you to:
 See License FAQ <http://www.apache.org/foundation/licence-FAQ.html> for more details.
 
 
+
 Using with Tomcat6 Web Server
-========================================
+=============================
 sqlcipher-jdbc can be used with Tomcat6 Web Server in the same way as xerial's SQLite JDBC driver package.
 
 Do not include sqlcipher-jdbc-(version).jar in WEB-INF/lib folder of your web application 
@@ -298,8 +290,8 @@ and manually put the sqlcipher-jdbc jar file into (TOMCAT_HOME)/lib folder.
 
 
 
-Build process : Introduction
-========================================
+Build process
+==================
 The following are the steps to follow to upgrade SqlCipher to the latest (or the version
 that you desire) and build a common jar for 64-bit Windows and Linux.
 
@@ -313,9 +305,8 @@ The above steps are explained in detail the following sections. I have also adde
 section on notes on tools and libraries used.
 
 
-
-Build process : Building sqlcipher project for Windows-x64
-==========================================================
+Building sqlcipher project for Windows-x64
+-------------------------------------------
 Steps to build sqlcipher related files that are needed for common sqlcipher-jdbc jar file
 
 1. MSYS2 installation
@@ -451,10 +442,8 @@ Steps to build sqlcipher related files that are needed for common sqlcipher-jdbc
 	sqlite> .quit
 
 
-
-
 Build process : Building sqllitejdbc.dll library for Windows
-============================================================
+------------------------------------------------------------
 Steps to build sqlcipher related files (sqllitejdbc.dll for Windows) that are later used to
 create a common sqlcipher-jdbc jar file
 
@@ -495,11 +484,10 @@ create a common sqlcipher-jdbc jar file
 		callers can never get to the native library functions.
 
 	Any change or new interface needs to be implemented in these trio functions.
-	
 
 
 Build process : Building libsqlitejdbc.so library for Linux
-===========================================================
+-----------------------------------------------------------
 Steps to build sqlcipher related files (sqlcipher-jdbc.so for Linux) that are later used to
 create a common sqlcipher-jdbc jar file
 
@@ -551,10 +539,8 @@ create a common sqlcipher-jdbc jar file
 	to C:\Tools\sqlcipher-jdbc\src\main\resources\org\sqlite\native\Linux\amd64
 
 
-
-
 Build process : Building common sqlcipher-jdbc.jar (for Windows and Linux)
-===========================================================================
+--------------------------------------------------------------------------
 Steps for building sqlcipher-jdbc.jar (common for windows and linux) and test it. It is important to 
 test the .dll and jar file so that any issues with native interface etc. are resolved here, before
 a common jar file created to use at both Windows and Linux.
@@ -605,9 +591,8 @@ NOTE: In this project, Netbeans has been used to create the common sqlcipher-jdb
 	library through the JNI interface functions. This resolved the issue.
 
 
-
 Build process : Additional notes
-================================
+---------------------------------
 1. As stated before, Used MSYS2 to compile sqlcipher project on windows
 	and Netbeans for compiling the common jar file
 2. The project is compiled for Java-17 
