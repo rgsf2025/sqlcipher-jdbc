@@ -273,18 +273,18 @@ Building SqlCipher JDBC driver (sqlcipher-jdbc.jar)
 The following are the steps to follow to upgrade SqlCipher to the latest (or the version
 that you desire) and build a common jar for 64-bit Windows and Linux.
 
-1. Windows-x64: Building sqlcipher project and testing sqlite3.exe (sqlite with sqlCipher)
+1. Windows (64-bit): Building sqlcipher project and testing sqlite3.exe (sqlite with sqlCipher)
 
-2. Windows-x64: Building SqlCipherJdbc.jar (for Windows only, for now)
+2. Windows (64-bit): Building SqlCipherJdbc.jar (for Windows only, for now)
 
-3. Linux (amd64) : Building sqlcipher project
+3. Linux (64-bit) : Building sqlcipher project
 
 The above steps are explained in detail the following sections. I have also added an additional 
 section on notes on tools and libraries used.
 
 
-Building the basic sqlcipher project for Windows-x64
------------------------------------------------------
+Building the basic sqlcipher project for Windows (64-bit)
+---------------------------------------------------------
 Steps to build sqlcipher related files that are needed for common sqlcipher-jdbc jar file
 
 1. MSYS2 installation
