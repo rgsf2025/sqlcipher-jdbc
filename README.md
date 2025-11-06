@@ -14,6 +14,7 @@ There are two major changes here, compared to decamp. They are,
 2. Built for 64-bit versions of Windows (specifically Windows-11) and Linux
 
 
+
 About SqlCipher
 ==================
 [SQLCipher](https://www.zetetic.net/sqlcipher/) is a version of SQLite that is modified to support encryption.
@@ -37,6 +38,8 @@ See SQLCipher documentation for the relevant pragmas that control encryption. Th
 - cipher_migrate
 - cipher_profile
 
+
+
 Existing Sqlite-Jdbc and sqlcipher-jdbc projects
 ===============================================
 
@@ -45,7 +48,8 @@ Several repositories at GitHub provide implementations or related information fo
 1. Xerial Sqlite-Jdbc driver (https://github.com/xerial/sqlite-jdbc) by [Taro L. Saito]:
 This is Sqlite Jdbc driver and hence it has all the everything required to connect native
 [SQLite](http://sqlite.org) to the java world. However, this does not include the encryption,
-which is added in SqlCipher (extension of sqlite with encryption).
+which is added in SqlCipher (extension of sqlite with encryption).There is a public discussion forum at
+[Xerial Public Discussion Group](http://groups.google.com/group/xerial?hl=en) 
 
 
 2. Willena/sqlite-jdbc-crypt (https://github.com/Willena/sqlite-jdbc-crypt) : This is a prominent
@@ -82,11 +86,6 @@ So, Here we decided to stick with decamp work, update it with sqlcipher ver 4.10
 for 64-bit versions of Windows and Linux using Jave JDK17. For detailed instructions on building
 the common jar file, see the last sections all the way below.
 
-
-Public Discussion Forum on the JDBC driver
-==========================================
-*  [Xerial Public Discussion Group](http://groups.google.com/group/xerial?hl=en) 
-	Note: for some time now, there are no discussions there. But the forum is open.
 
 
 Using SqlCipher JDBC driver
@@ -232,6 +231,7 @@ types of native SQLite libraries (`sqlcipher-jdbc.dll`, `sqlcipher-jdbc.so`),
 each of them is compiled for Windows and Linux. An appropriate native library 
 file is automatically extracted into your OS's temporary folder, when your program 
 loads `org.sqlite.JDBC` driver. 
+
 
 
 License
@@ -472,13 +472,13 @@ Steps to build sqlcipher related files that are needed for common sqlcipher-jdbc
 	
 	sqlite> select * from Students;
 	
-	1|Sri|Ram|01-01-2000|sri_ram@gmail.com
+	1|Sri|Ram|01-01-2000|sri_ram@zohomail.com
 	
 	sqlite>  Insert into Students(FirstName, LastName, BirthDate, Email) VALUES ("your", "name", "01-01-2010", "your_name@gmail.com");
 	
 	sqlite> select * from Students;
 	
-	1|Sri|Ram|01-01-2000|sri_ram@gmail.com
+	1|Sri|Ram|01-01-2000|sri_ram@zohomail.com
 	
 	2|your|name|01-01-2010|your_name@gmail.org
 	
@@ -585,7 +585,7 @@ create a common sqlcipher-jdbc jar file
 3. Create libsqlitejdbc.so
 	a) Copy C:\Tools\sqlcipher-jdbc to <your-folder>/tools/sqlcipher-jdbc folder 
 	
-	Note: all make files are modified appropriately to copy the appropriate files from sqlcipher folder
+	NOTE: all make files are modified appropriately to copy the appropriate files from sqlcipher folder
 	
 	make clean
 	
@@ -603,6 +603,7 @@ Building common sqlcipher-jdbc.jar (for Windows and Linux)
 Steps for building sqlcipher-jdbc.jar (common for windows and linux) and test it. It is important to 
 test the .dll and jar file so that any issues with native interface etc. are resolved here, before
 a common jar file created to use at both Windows and Linux.
+
 NOTE: In this project, Netbeans has been used to create the common sqlcipher-jdbc.jar file.
 
 1. If the sqllitejdbc.dll (for Windows) was built here, then that DLL will already be at the right place
@@ -629,6 +630,7 @@ NOTE: In this project, Netbeans has been used to create the common sqlcipher-jdb
 
 6. Junit  tests: During the above step, the projects is devised to run 166 tests. and they should all pass.
 	Check for any errors (like deprecated etc.) and fix them.
+	
 	NOTE: Unfortunately these tests could not be run in Linux as these are junit tests (on Netbeans on Windows in our setup).
 	
 	OUTPUT: sqlcipher-jdbc.jar in C:\Tools\sqlcipher-jdbc\target folder.
